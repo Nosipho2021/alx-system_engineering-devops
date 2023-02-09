@@ -1,2 +1,2 @@
 #!/bin/bash
-chown -h vibcent:staff _hello
+chown vibcent:staff _hello
