@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Install Nginx
+apt-get update
+apt-get install -y nginx
+
+# Ensure Nginx is listening on port 80
+sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+
+# Restart Nginx without using systemctl
+service nginx restart
+
+# Verify Nginx configuration
+if ! grep -q "Hello World!" /var/www/html/index.html; then
+    echo "Hello World!" | sudo tee /var/www/html/index.html
+fi
+
