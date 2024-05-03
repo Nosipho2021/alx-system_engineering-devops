@@ -1,24 +1,6 @@
 #!/usr/bin/env bash
 
-if ! service nginx status | grep -q "active (running)"
-then
-    apt-get update
-    apt-get install nginx -y
-fi
+# Check if Nginx is installed and running, and configure it to listen on port 80
+if ! pgrep nginx > /dev/null; then apt update && apt install nginx -y; fi
+if ! netstat -tuln | grep -q ":80"; then sed -i 's/#listen 80;/listen 80;/g' /etc/nginx/sites-available/default && systemctl reload nginx; fi
 
-if ! netstat -tuln | grep LISTEN | grep -q ":80"
-then
-    echo "
-    server {
-        listen 80;
-        listen [::]:80;
-
-        server_name _;
-
-        location / {
-            # Your site configuration goes here
-        }
-    }" > /etc/nginx/sites-available/default
-
-    systemctl reload nginx
-fi
