@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
+# Configures an Nginx server to listen on port 80
 
-# Check if Nginx is installed and running, and configure it to listen on port 80
-if ! pgrep nginx > /dev/null; then apt update && apt install nginx -y; fi
-if ! netstat -tuln | grep -q ":80"; then sed -i 's/#listen 80;/listen 80;/g' /etc/nginx/sites-available/default && systemctl reload nginx; fi
-
+# Creates a symbolic link (-s option) between the Nginx configuration file
+# and enabled sites directory
+In -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
