@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
+# Script to install and configure Nginx to listen on port 80
 
 # Check if Nginx is installed
-if ! command -v nginx &> /dev/null
-then
+if ! command -v nginx &> /dev/null; then
     echo "Nginx is not installed. Installing..."
     sudo apt-get update
-    sudo apt-get install nginx
+    sudo apt-get install nginx -y
 fi
 
 # Check if Nginx is listening on port 80
-if ! sudo netstat -tuln | grep LISTEN | grep -q :80
-then
+if ! sudo netstat -tuln | grep LISTEN | grep -q ":80"; then
     echo "Configuring Nginx to listen on port 80..."
 
     # Backup default Nginx configuration
@@ -27,12 +26,17 @@ then
         location / {
             # Your site configuration goes here
         }
-    }" | sudo tee /etc/nginx/sites-available/default
-
-    # Reload Nginx configuration
+    }" | sudo tee /etc/nginx/sites-available/default >/dev/null
+    
+    # Reload Nginx to apply the changes
     sudo systemctl reload nginx
 
-    echo "Nginx configured to listen on port 80."
-else
-    echo "Nginx is already listening on port 80."
+    # Check if Nginx serves a web page with HTTP 200 status code
+    response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
+    if [ "$response" == "200" ]; then
+        echo "Nginx is configured and serving a web page with HTTP 200 status code."
+    else
+        echo "Nginx configuration failed. HTTP response code: $response"
+    fi
 fi
+
