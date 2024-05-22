@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Configures Nginx to listen on port 80
-
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-service nginx start
-sleep 1
-[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost)" == "200" ] && echo "Nginx is configured and serving a web page with HTTP 200 status code."
-
+#Sets nginx for listening to 80 port
+sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
+sudo service nginx restart
+kill -9 "$(cat /var/run/nginx.pid)"
