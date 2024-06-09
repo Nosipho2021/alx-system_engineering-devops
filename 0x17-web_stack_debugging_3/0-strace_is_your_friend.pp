@@ -1,4 +1,4 @@
-fest to fix missing PHP file for WordPress
+# This Puppet manifest ensures the wp-config.php file exists and has the correct permissions
 
 file { '/var/www/html/wp-config.php':
   ensure  => file,
