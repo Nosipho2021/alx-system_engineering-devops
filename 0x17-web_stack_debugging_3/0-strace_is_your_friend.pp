@@ -1,16 +1,6 @@
-# This Puppet manifest ensures the wp-config.php file exists and has the correct permissions
+# Alters bad `phpp` extensions to `php`
 
-file { '/var/www/html/wp-config.php':
-  ensure  => file,
-  owner   => 'www-data',
-  group   => 'www-data',
-  mode    => '0644',
-  content => template('wordpress/wp-config.php.erb'),
-}
-
-# Ensure the Apache service is running
-service { 'apache2':
-  ensure => running,
-  enable => true,
-}
-
+exec { 'fix-wordpress':
+  command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
+  path    => '/usr/local/bin/:/bin/'
+}i
