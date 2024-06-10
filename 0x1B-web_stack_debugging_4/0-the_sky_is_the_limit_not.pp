@@ -1,5 +1,4 @@
 #  Fixes our stack so that we get to 0
-
 file { 'replace last line':
     ensure  => present,
     path    => '/etc/default/nginx',
